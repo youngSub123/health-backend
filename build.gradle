@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.10'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+description = 'health'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // 이게 있어야 @Entity 해결됨
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok' // 이게 있어야 @Getter 해결됨
+    annotationProcessor 'org.projectlombok:lombok'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // ✨ OCR(이미지 글자 인식) 라이브러리 추가
+    //implementation 'net.sourceforge.tess4j:tess4j:5.9.0'
+    // 📸 사진 정보(EXIF) 추출 라이브러리
+    implementation 'com.drewnoakes:metadata-extractor:2.18.0'
+    // ☁️ 구글 클라우드 비전 API
+    implementation 'com.google.cloud:google-cloud-vision:3.32.0'
+    runtimeOnly 'org.postgresql:postgresql'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()A
+}
