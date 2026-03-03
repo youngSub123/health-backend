@@ -9,7 +9,11 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000", "http://localhost:5173", "http://localhost:5174") // 👈 3000(Next)과 5173(Vue) 둘 다 허용
+                .allowedOrigins("http://localhost:3000",
+                "http://localhost:5173",
+                "http://localhost:5174",
+                "https://health-frontend-inky.vercel.app"
+            ) // 👈 3000(Next)과 5173(Vue) 둘 다 허용
                 .allowedMethods("GET", "POST", "PUT", "DELETE");
     }
 }
