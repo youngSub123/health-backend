@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
+import { BASE_URL } from '../config';
 import { Bar } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
 
@@ -64,7 +65,7 @@ const get1RM = (weight: number, reps: number) => {
 // --- 6. API 연동 (단백질 및 프로필) ---
 const fetchProfile = async () => {
   try {
-    const res = await fetch(`http://localhost:8080/api/profile/${userId.value}`)
+    const res = await fetch(`${BASE_URL}/api/profile/${userId.value}`)
     const data = await res.json()
     if (data.targetProtein) {
       targetProtein.value = data.targetProtein // 대시보드 데이터 덮어쓰기
@@ -74,20 +75,20 @@ const fetchProfile = async () => {
 
 const fetchProtein = async () => {
   try {
-    const res = await fetch(`http://localhost:8080/api/protein/${userId.value}`)
+    const res = await fetch(`${BASE_URL}/api/protein/${userId.value}`)
     currentProtein.value = await res.json()
   } catch (err) { console.error(err) }
 }
 
 const addProtein = async () => {
   if (inputProtein.value <= 0) return alert('추가할 단백질량(g)을 입력하세요!')
-  await fetch(`http://localhost:8080/api/protein/${userId.value}?amount=${inputProtein.value}`, { method: 'POST' })
+  await fetch(`${BASE_URL}/api/protein/${userId.value}?amount=${inputProtein.value}`, { method: 'POST' })
   inputProtein.value = 0
   fetchProtein() // 추가 후 화면 갱신
 }
 
 const resetProtein = async () => {
-  await fetch(`http://localhost:8080/api/protein/${userId.value}`, { method: 'DELETE' })
+  await fetch(`${BASE_URL}/api/protein/${userId.value}`, { method: 'DELETE' })
   fetchProtein()
 }
 
@@ -95,7 +96,7 @@ const resetProtein = async () => {
 const fetchWorkouts = async () => {
   try {
     // 주소를 아까 컨트롤러에서 만든 /api/workouts/list/내아이디 로 변경!
-    const res = await fetch(`http://localhost:8080/api/workouts/list/${userId.value}`)
+    const res = await fetch(`${BASE_URL}/api/workouts/list/${userId.value}`)
     workouts.value = await res.json()
   } catch (err) { console.error(err) }
 }
@@ -103,7 +104,7 @@ const fetchWorkouts = async () => {
 const saveWorkout = async () => {
   if (!name.value) return alert('운동 이름을 입력해주세요!')
 
-  const url = editId.value ? `http://localhost:8080/api/workouts/${editId.value}` : 'http://localhost:8080/api/workouts'
+  const url = editId.value ? `${BASE_URL}/api/workouts/${editId.value}` : '${BASE_URL}/api/workouts'
   const method = editId.value ? 'PUT' : 'POST'
 
   await fetch(url, {
@@ -133,7 +134,7 @@ const resetForm = () => {
 
 const deleteWorkout = async (id: number) => {
   if (!confirm('정말 삭제하시겠습니까?')) return
-  await fetch(`http://localhost:8080/api/workouts/${id}`, { method: 'DELETE' })
+  await fetch(`${BASE_URL}/api/workouts/${id}`, { method: 'DELETE' })
   fetchWorkouts()
 }
 

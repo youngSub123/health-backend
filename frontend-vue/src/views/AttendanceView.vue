@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
+import { BASE_URL } from '../config';
 
 // 1. 데이터 타입 정의
 interface Attendance {
@@ -36,7 +37,7 @@ const uploadImage = async () => {
   formData.append('userId', userId.value)
 
   try {
-    const res = await fetch('http://localhost:8080/api/attendance', {
+    const res = await fetch('${BASE_URL}/api/attendance', {
       method: 'POST',
       body: formData
     })
@@ -52,7 +53,7 @@ const uploadImage = async () => {
 
 // 4. 출석 기록 가져오기
 const fetchAttendance = async () => {
-  const res = await fetch(`http://localhost:8080/api/attendance/${userId.value}`)
+  const res = await fetch(`${BASE_URL}/api/attendance/${userId.value}`)
   const data = await res.json()
   attendanceList.value = data
 }
@@ -99,7 +100,7 @@ const resetAll = async () => {
   if (!confirm('정말 모든 데이터를 삭제하시겠습니까? (되돌릴 수 없어요!)')) return
 
   try {
-    const res = await fetch('http://localhost:8080/api/attendance/reset', {
+    const res = await fetch(`${BASE_URL}/api/attendance/reset`, {
       method: 'DELETE'
     })
     const msg = await res.text()

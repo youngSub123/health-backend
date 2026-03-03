@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { BASE_URL } from '../config';
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -14,7 +15,7 @@ const isLoginMode = ref(true) // true면 로그인 화면, false면 회원가입
 const doLogin = async () => {
   if (!userId.value || !password.value) return alert('아이디와 비밀번호를 입력해주세요!')
 
-  const res = await fetch('http://localhost:8080/api/auth/login', {
+  const res = await fetch(`${BASE_URL}/api/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ userId: userId.value, password: password.value })
@@ -44,7 +45,7 @@ const doLogin = async () => {
 const doSignup = async () => {
   if (!userId.value || !password.value || !name.value) return alert('모든 칸을 입력해주세요!')
 
-  const res = await fetch('http://localhost:8080/api/auth/signup', {
+  const res = await fetch(`${BASE_URL}/api/auth/signup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ userId: userId.value, password: password.value, name: name.value })

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
+import { BASE_URL } from '../config';
 
 const userId = ref(localStorage.getItem('loginUser') || '')
 
@@ -22,7 +23,7 @@ const recommendedProtein = computed(() => {
 // 서버에서 내 프로필 가져오기
 const fetchProfile = async () => {
   try {
-    const res = await fetch(`http://localhost:8080/api/profile/${userId.value}`)
+    const res = await fetch(`${BASE_URL}/api/profile/${userId.value}`)
     const data = await res.json()
     height.value = data.height
     weight.value = data.weight
@@ -34,7 +35,7 @@ const fetchProfile = async () => {
 // 서버에 내 프로필 저장하기
 const saveProfile = async () => {
   try {
-    const res = await fetch('http://localhost:8080/api/profile', {
+    const res = await fetch(`${BASE_URL}/api/profile`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
